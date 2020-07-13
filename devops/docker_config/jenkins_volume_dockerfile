@@ -1,0 +1,4 @@
+FROM alpine
+COPY jenkins_home.zip /tmp/
+RUN apk update && \
+    apk add zip unzip

@@ -1,0 +1,80 @@
+# Create jenkins deployment
+apiVersion: apps/v1 
+kind: Deployment 
+metadata: 
+ name: jenkins-deploy 
+spec:
+ replicas: 1
+ selector:
+  matchLabels:
+   app: jenkins
+   env: development
+ template:
+  metadata:
+   name: jenkins-template
+   labels:
+    app: jenkins
+    env: development
+  spec:
+   initContainers:
+   - name: volume-container 
+     image: abujojupwork/jenkins_volume:v1
+     command: ['/bin/sh', '-c', 'unzip -o /tmp/jenkins_home.zip -d /var/ && chown -R 1000:1000 /var/jenkins_home/ && chmod 666 /var/run/docker.sock']
+     securityContext:
+       runAsUser: 0
+     volumeMounts: 
+     - mountPath: "/var/jenkins_home/" 
+       name: jenkins-volume    
+     - mountPath: "/var/run/docker.sock" 
+       name: docker-volume       
+   containers: 
+   - name: jenkins-container 
+     image: abujojupwork/jenkins:v1
+     volumeMounts: 
+     - mountPath: "/var/jenkins_home/" 
+       name: jenkins-volume
+     - mountPath: "/var/jenkins_home/.kube/" 
+       name: jenkins-configmap 
+     - mountPath: "/var/run/docker.sock" 
+       name: docker-volume           
+     env:
+     - name: JENKINS_OPTS
+       value: --prefix=/jenkins
+     - name: JAVA_OPTS
+       value: -Djava.awt.headless=true  
+     - name: JAVA_OPTS
+       value: -Djenkins.install.runSetupWizard=false      
+     resources:
+      requests:
+       memory: "1Gi"
+       cpu: 1
+      limits:
+       memory: "3Gi"
+       cpu: 2 
+   volumes:
+   - name: jenkins-volume
+     persistentVolumeClaim:
+       claimName: azure-pvc
+   - name: jenkins-configmap
+     configMap:
+       name: "jenkins-configmap"  
+   - name: docker-volume
+     hostPath:
+       path: /var/run/docker.sock 
+                   
+---
+# Create jenkins service
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-svc
+spec:
+  selector:
+    app: jenkins
+    env: development
+  type: ClusterIP	
+  ports:
+  - name: webaccess
+    port: 8080
+    protocol: TCP
+    targetPort: 8080

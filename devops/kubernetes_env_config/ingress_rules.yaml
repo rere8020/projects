@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-rules
+  annotations:
+    nginx.org/rewrites: "serviceName=jenkins-svc rewrite=/jenkins/"
+spec:
+  rules:
+  - host: www.abujoj.com 
+    http:
+      paths:
+      - path: /jenkins/
+        backend:
+          serviceName: jenkins-svc
+          servicePort: 8080
+      - path: /
+        backend:
+          serviceName: web-app-svc
+          servicePort: 80    

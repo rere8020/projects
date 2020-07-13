@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <!--
+    
+      Author: <Rene Vega> 
+      Date:   <July 9 2020>
+
+   -->
+   <meta charset="utf-8" />
+   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+   <title>Unit 3 Graded Exercise 1</title>
+   <link rel="stylesheet" href="style.css" />
+   <script src="modernizr.custom.05819.js"></script>
+</head>
+
+<body onload="startBounce()">
+   <header>
+      <h1>
+         Rene Vega, Jackhammer Man Exercise
+      </h1>
+   </header>
+
+   <article>
+        <img id="imgJackhammer" src="jackhammer0.gif" width="113" height="100" alt="Image of a man with a jackhammer." ><br>
+    </article>
+
+
+   <script>
+        var jackhammers=["jackhammer0.gif","jackhammer1.gif","jackhammer2.gif","jackhammer3.gif","jackhammer4.gif","jackhammer5.gif","jackhammer6.gif","jackhammer7.gif","jackhammer8.gif","jackhammer9.gif","jackhammer10.gif",];
+        var curJackhammer=0;
+        function bounce(){
+            curJackhammer=(curJackhammer==10)?0:++curJackhammer;
+            var imgholder=document.getElementById("imgJackhammer");
+            imgholder.src=jackhammers[curJackhammer];
+        }
+       function startBounce(){
+            setInterval(bounce,90);
+        }
+        
+   </script>
+</body>
+</html>

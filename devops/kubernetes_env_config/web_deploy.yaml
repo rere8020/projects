@@ -1,0 +1,38 @@
+# Create a web deployment
+apiVersion: apps/v1 
+kind: Deployment 
+metadata: 
+ name: web-app 
+spec:
+ replicas: 6
+ selector:
+  matchLabels:
+   app: nginx
+   env: development
+ template:
+  metadata:
+   name: web-template
+   labels:
+    app: nginx
+    env: development
+  spec:
+   containers: 
+   - name: web-container 
+     image: abujojupwork/myweb:24
+
+---
+# Create a web service
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-svc
+spec:
+  selector:
+    app: nginx
+    env: development
+  type: ClusterIP	
+  ports:
+  - name: webaccess
+    port: 80
+    protocol: TCP
+    targetPort: 80

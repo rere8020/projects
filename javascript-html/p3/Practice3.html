@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <!--
+     
+      Author: <Rene Vega> 
+      Date:   <June 29 2020>
+
+   -->
+   <meta charset="utf-8" />
+   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+   <title>Unit 2 Graded Exercise 1</title>
+   <link rel="stylesheet" href="style.css" />
+   <script src="modernizr.custom.05819.js"></script>
+</head>
+
+<body>
+   <header>
+      <h1>
+         Rene Vega, Calculate Shipping and Handling 
+      </h1>
+   </header>
+
+   <article>
+     <label for="price">Purchase Price</label>
+     <input id="price" type="text" value="0">
+     <input type="button" value="Calculate Shipping and Handling" onclick="calculateShippingandHandling()">
+   </article>
+
+
+   <script>
+       function calculateShippingandHandling(){
+           var price=parseFloat(document.getElementById("price").value);
+           if(price<25){
+               var totalOrder= price*0.015;
+               totalOrder= totalOrder + price;
+               alert("The total order is "+totalOrder)
+           }
+           else{
+               var totalOrder= (price*0.1) ;
+                totalOrder+=price;
+               alert("The total order is "+totalOrder)
+
+           }
+       }
+   </script>
+</body>
+</html>

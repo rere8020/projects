@@ -1,0 +1,10 @@
+FROM nginx
+WORKDIR /usr/share/nginx/html/
+ADD https://github.com/abujoj-upwork/wordpress/archive/master.zip .
+RUN apt update && \
+    apt install -y unzip && \
+    chmod 744 master.zip && \
+    unzip master.zip -d tempdir && \
+    mv tempdir/wordpress-master/* . && \
+    rm -rf tempdir/ && \
+    rm -f master.zip  
